@@ -126,7 +126,6 @@ void generateBoxFront(float x, float y, float z, int divis, string filename){
 
         for (float i = y/2; i > -y/2; i -= stepy) {
             for (float j = -x/2; j < x/2; j += stepx) {
-                //Point p1, p2, p3, p4;
                 /*
                  * p1---p4
                  *  | \ |

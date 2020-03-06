@@ -24,6 +24,7 @@ int line = GL_LINE;
 vector<Point> points;
 float alpha = 0.6f, beta = 0.4f, radius = 10.0f, step = 0.1f;
 
+void drawAxes(void);
 void drawPrimitives(void);
 int readPointsFile(string filename);
 void specialKeys(int key, int a, int b);

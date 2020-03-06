@@ -5,6 +5,27 @@
 using namespace std;
 using namespace tinyxml2;
 
+void drawAxes() {
+    glBegin(GL_LINES);
+
+    // Eixo X (vermelho)
+    glColor3f(1, 0, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(15, 0, 0);
+
+    // Eixo Y (azul)
+    glColor3f(0, 0, 1);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 15, 0);
+
+    // Eixo Z (verde)
+    glColor3f(0, 1, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, 15);
+
+    glEnd();
+}
+
 void drawPrimitives(void){
 
     glBegin(GL_TRIANGLES);
@@ -61,8 +82,8 @@ int readPointsFile(string filename){
         }
         points.pop_back();
         file.close();
+        return 0;
     }
-    return 0;
 }
 
 int loadXMLfile(string filename){
@@ -190,6 +211,7 @@ void renderScene(void){
     glLoadIdentity();
     gluLookAt(radius*cos(beta)*sin(alpha), radius*sin(beta), radius*cos(beta)*cos(alpha), 0.0, 0.0, 0.0, 0.0f, 1.0f, 0.0f);
     glPolygonMode(GL_FRONT_AND_BACK, line);
+    drawAxes();
     drawPrimitives();
 
     glutSwapBuffers();

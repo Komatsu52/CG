@@ -10,19 +10,19 @@ using namespace std;
 
 class Group {
 
-private:
-    vector<Group*> groups;
-    vector<Transformation*> trans;
-    vector<Shape*> shapes;
+    private:
+        vector<Group*> groups;
+        vector<Transformation*> trans;
+        vector<Shape*> shapes;
 
-public:
-    Group();
-    void addGroup(Group* g);
-    void addTransformation(Transformation* t);
-    void setShapes(vector<Shape*> sh);
-    vector<Group*> getGroup();
-    vector<Transformation*> getTrans();
-    vector<Shape*> getShapes();
+    public:
+        Group();
+        void addGroup(Group* g);
+        void addTransformation(Transformation* t);
+        void setShapes(vector<Shape*> sh);
+        vector<Group*> getGroup();
+        vector<Transformation*> getTrans();
+        vector<Shape*> getShapes();
 };
 
 #endif

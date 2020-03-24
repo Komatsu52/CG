@@ -1,5 +1,13 @@
-//
-// Created by goncalo on 24/03/20.
-//
-
 #include "Shape.h"
+
+Shape :: Shape(){
+
+}
+
+Shape :: Shape(vector<Point*> p){
+    points = p;
+}
+
+vector<Point*> Shape :: getPoints() {
+    return points;
+}

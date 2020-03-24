@@ -9,13 +9,13 @@ using namespace std;
 
 class Shape {
 
-private:
-    vector<Point*> points;
+    private:
+        vector<Point*> points;
 
-public:
-    Shape();
-    Shape(vector<Point*> p);
-    vector<Point*> getPoints();
+    public:
+        Shape();
+        Shape(vector<Point*> p);
+        vector<Point*> getPoints();
 };
 
 #endif

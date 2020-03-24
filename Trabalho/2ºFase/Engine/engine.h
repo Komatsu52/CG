@@ -12,24 +12,23 @@
 #include <fstream>
 #include <sstream>
 
+#include "Point.h"
+#include "Group.h"
+#include "Camera.h"
+
 using namespace std;
 
-typedef struct point{
-    float x;
-    float y;
-    float z;
-}Point;
-
 int line = GL_LINE;
-vector<Point> points;
-float alpha = 0.6f, beta = 0.4f, radius = 10.0f, step = 0.1f;
+Group *scene;
+Camera *camera;
+vector<Point*> orbits;
 
-void drawAxes(void);
-void drawPrimitives(void);
+void drawAxes();
+void drawPrimitives();
 int readPointsFile(string filename);
 void specialKeys(int key, int a, int b);
-void renderScene(void);
+void renderScene();
 void changeSize(int w, int h);
 void MenuAjuda();
 
-#endif //ENGINE_ENGINE_H
+#endif

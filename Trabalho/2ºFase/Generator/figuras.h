@@ -20,4 +20,5 @@ vector<Point> generateSphere(float radius, int slices, int stacks);
 vector<Point> generateCone(float radius, float height, int slices, int stacks);
 vector<Point> generateCylinder (float radius, float height, int slices, int stacks);
 vector<Point> generateTorus(float radiusIn,float radiusOut , int slices, int layers);
+
 #endif

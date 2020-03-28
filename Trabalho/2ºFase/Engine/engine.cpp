@@ -1,127 +1,67 @@
 #include <stdlib.h>
-#include "tinyxml2.h"
+
 #include "engine.h"
+#include "tinyxml2.h"
+#include "Point.h"
+#include "parser.h"
 
 using namespace std;
 using namespace tinyxml2;
 
-void drawAxes() {
-    glBegin(GL_LINES);
+void drawScene(Group *scene){
+    const char* type;
 
-    // Eixo X (vermelho)
-    glColor3f(1, 0, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(15, 0, 0);
+    glPushMatrix();
+    glColor3f(0.5f, 0.5f, 1.0f);
 
-    // Eixo Y (azul)
-    glColor3f(0, 0, 1);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 15, 0);
+    for(Transformation *t : scene -> getTrans()){
+        type = t -> getType().c_str();
 
-    // Eixo Z (verde)
-    glColor3f(0, 1, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 0, 15);
+        if(!strcmp(type, "translation"))
+            glTranslatef(t -> getX(), t -> getY(), t -> getZ());
 
-    glEnd();
-}
+        else if(!strcmp(type, "rotation"))
+            glRotatef(t -> getAngle(), t -> getX(), t -> getY(), t -> getZ());
 
-void drawPrimitives(void){
+        else if(!strcmp(type, "scale"))
+            glScalef(t -> getX(), t -> getY(), t -> getZ());
+
+        else if(!strcmp(type, "colour"))
+            glColor3f(t -> getX(), t -> getY(), t -> getZ());
+    }
 
     glBegin(GL_TRIANGLES);
-    int i = 0;
-    bool cor = true;
 
-    for(const Point pt : points){
-        if(i == 3){
-            cor = !cor;
-            i = 0;
-        }
-
-        if(cor){
-            glColor3f(0.2, 0.2, 1);
-            glVertex3f(pt.x, pt.y, pt.z);
-        }
-        else{
-            glColor3f(0.7, 0.7, 1);
-            glVertex3f(pt.x, pt.y, pt.z);
-        }
-
-        i++;
+    for(Shape *shape : scene -> getShapes()){
+        for(Point *p : shape -> getPoints())
+            glVertex3f(p -> getX(), p -> getY(), p -> getZ());
     }
+
     glEnd();
+
+    for(Group *g : scene -> getGroups())
+        drawScene(g);
+
+    glPopMatrix();
 }
 
-int readPointsFile(string filename){
+void drawOrbits(){
+    glColor3f(1.0f, 1.0f, 0.94f);
 
-    Point p;
-    string l, aux;
-    ifstream file(filename);
-    int i;
+    for(auto const& p : orbits){
+        glBegin(GL_POINTS);
 
-    if(!file.is_open()){
-        cout << "Impossível abrir ficheiro: " << filename << "." << endl;
-        return -1;
-    }
-    else{
-        while(!file.eof()){
-            getline(file, l);
-            stringstream ss(l.c_str());
-
-            if(l.c_str() != NULL){
-                for(i = 0; getline(ss, aux, ','); i++){
-                    if(i == 0)
-                        p.x = stof(aux);
-                    else if(i == 1)
-                        p.y = stof(aux);
-                    else
-                        p.z = stof(aux);
-                }
-                points.push_back(p);
-            }
+        for(int j = 0; j < 200; j++){
+            float x = p -> getX() * p -> getX();
+            float y = p -> getY() * p -> getY();
+            float z = p -> getZ() * p -> getZ();
+            float radius = sqrtf(x + y + z);
+            float alpha = (float)j * 2 * (float)(M_PI / 200);
+            glVertex3f(radius * cos(alpha), 0, radius * sin(alpha));
         }
-        points.pop_back();
-        file.close();
-        return 0;
+
+        glEnd();
     }
-}
-
-int loadXMLfile(string filename){
-
-    XMLDocument xmlDoc;
-    XMLNode *pNode;
-    XMLElement *pElement, *pListElement;
-    string fileDir = "../../XMLs/" + filename;
-    XMLError error = xmlDoc.LoadFile(fileDir.c_str());
-
-    if(error == XML_SUCCESS){
-        pNode = xmlDoc.FirstChild();
-
-        if(pNode != nullptr){
-            pElement = pNode -> FirstChildElement("models");
-
-            if(pElement != nullptr){
-                pListElement = pElement -> FirstChildElement("model");
-
-                while(pListElement != nullptr){
-                    string file;
-                    file = pListElement -> Attribute("file");
-
-                    if(!file.empty() && readPointsFile(file) == -1)
-                        return -1;
-
-                    pListElement = pListElement -> NextSiblingElement("model");
-                }
-            }
-        }
-    }
-
-    else{
-        cout << "Impossível abrir ficheiro: " << filename << "." << endl;
-        return -1;
-    }
-
-    return 0;
 }
 
 void MenuAjuda(){
@@ -144,6 +84,8 @@ void MenuAjuda(){
     cout << "                                                                  " << endl;
     cout << "    F2 : Diminuir tamanho da imagem                               " << endl;
     cout << "                                                                  " << endl;
+    cout << "    F6 : Estado inicial                                           " << endl;
+    cout << "                                                                  " << endl;
     cout << "    Formato:                                                      " << endl;
     cout << "    F3: Preencher a figura                                        " << endl;
     cout << "                                                                  " << endl;
@@ -153,38 +95,47 @@ void MenuAjuda(){
     cout << "                                                                  " << endl;
 }
 
-void specialKeys(int key, int a, int b){
+void processMenu(int option){
+    switch (option){
+        case 0:
+            exit(0);
 
+        case 1:
+            camera -> posIniCamera();
+            break;
+
+        default:{
+            Point *p = orbits.at(option - 2);
+            camera -> changeLook(p -> getX(), p -> getY(), p -> getZ());
+            break;
+        }
+    }
+
+    glutPostRedisplay();
+}
+
+void showMenu(){
+    int planet = glutCreateMenu(processMenu);
+
+    glutAddMenuEntry("Sol",1);
+
+    for (int op = 0; op < (int)orbits.size(); op++){
+        char str[10];
+        sprintf(str, "Planeta %d", op+1);
+        glutAddMenuEntry(str, op+2);
+    }
+
+    glutCreateMenu(processMenu);
+    glutAddSubMenu("Planeta ", planet);
+    glutAddMenuEntry("Sair", 0);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+void specialKeys(int key, int a, int b){
     (void) a;
     (void) b;
 
     switch (key){
-        case GLUT_KEY_UP:
-            if(beta < (M_PI/2 - step))
-                beta += step;
-            break;
-
-        case GLUT_KEY_DOWN:
-            if(beta > -(M_PI/2 - step))
-                beta -= step;
-            break;
-
-        case GLUT_KEY_LEFT:
-            alpha -= step;
-            break;
-
-        case GLUT_KEY_RIGHT:
-            alpha += step;
-            break;
-
-        case GLUT_KEY_F1:
-            radius -= step;
-            break;
-
-        case GLUT_KEY_F2:
-            radius += step;
-            break;
-
         case GLUT_KEY_F3:
             line = GL_FILL;
             break;
@@ -198,21 +149,30 @@ void specialKeys(int key, int a, int b){
             break;
 
         default:
+            camera -> specialKeysCamera(key);
             break;
     }
 
     glutPostRedisplay();
 }
 
-void renderScene(void){
+void pressMouse(int button, int state, int x, int y){
+    camera -> pressMouse(button, state, x, y);
+}
+
+void motionMouse(int x, int y){
+    camera -> motionMouse(x, y);
+}
+
+void renderScene(){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluLookAt(radius*cos(beta)*sin(alpha), radius*sin(beta), radius*cos(beta)*cos(alpha), 0.0, 0.0, 0.0, 0.0f, 1.0f, 0.0f);
+    gluLookAt(camera -> getPosX(), camera -> getPosY(), camera -> getPosZ(), camera -> getLookX(), camera -> getLookY(), camera -> getLookZ(), 0.0f, 1.0f, 0.0f);
     glPolygonMode(GL_FRONT_AND_BACK, line);
-    drawAxes();
-    drawPrimitives();
+    drawScene(scene);
+    drawOrbits();
 
     glutSwapBuffers();
 }
@@ -222,7 +182,7 @@ void changeSize(int w, int h){
     if(h == 0)
         h = 1;
 
-    float ratio = w * 1.0 / h;
+    float ratio = (float)w * 1.0f / (float)h;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -250,15 +210,26 @@ int main(int argc, char **argv){
         MenuAjuda();
         return 0;
     }
-    else if (loadXMLfile(argv[1]) == 0){
-        glutDisplayFunc(renderScene);
-        glutReshapeFunc(changeSize);
-        glutIdleFunc(renderScene);
-        glutSpecialFunc(specialKeys);
-    }
+
+    scene = loadXMLFile(argv[1], &orbits);
+    camera = new Camera();
+    if(scene == nullptr)
+        return 0;
+
+    glutDisplayFunc(renderScene);
+    glutReshapeFunc(changeSize);
+    glutIdleFunc(renderScene);
+    glutSpecialFunc(specialKeys);
+
+    glutMouseFunc(pressMouse);
+    glutMotionFunc(motionMouse);
+
+    showMenu();
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
     glutMainLoop();
+
+    return 1;
 }

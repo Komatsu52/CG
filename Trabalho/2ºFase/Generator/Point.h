@@ -1,14 +1,12 @@
-#ifndef ENGINE_POINT_H
-#define ENGINE_POINT_H
+#ifndef GENERATOR_POINT_H
+#define GENERATOR_POINT_H
 
 #include <math.h>
 #include <string>
 
 class Point {
-    private:
-        float x, y, z;
-
     public:
+        float x, y, z;
         Point();
         Point(float xx, float yy, float zz);
         float getX();

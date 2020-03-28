@@ -3,13 +3,9 @@
 
 #include <vector>
 
-using namespace std;
+#include "Point.h"
 
-typedef struct point {
-    float x;
-    float y;
-    float z;
-} Point;
+using namespace std;
 
 Point makePoint(float radius, float angle, float height);
 Point makePointSphere (float radius, float beta, float alpha);

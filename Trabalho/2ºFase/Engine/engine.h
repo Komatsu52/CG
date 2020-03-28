@@ -23,9 +23,6 @@ Group *scene;
 Camera *camera;
 vector<Point*> orbits;
 
-void drawAxes();
-void drawPrimitives();
-int readPointsFile(string filename);
 void specialKeys(int key, int a, int b);
 void renderScene();
 void changeSize(int w, int h);

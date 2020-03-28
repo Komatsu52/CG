@@ -5,7 +5,7 @@ PROJECT(generator)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} generator.cpp generator.h figuras.cpp figuras.h)
+add_executable(${PROJECT_NAME} generator.cpp generator.h figuras.cpp figuras.h Point.cpp Point.h)
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})

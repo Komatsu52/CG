@@ -2,9 +2,8 @@
 #define ENGINE_CAMERA_H
 
 class Camera {
-
     private:
-        float radius, speed, alpha, teta, posX, posY, posZ, lookX, looY, lookZ, mousePosX, mousePosY;
+        float radius, speed, alpha, teta, posX, posY, posZ, lookX, lookY, lookZ, mousePosX, mousePosY;
         bool mousePressed;
 
     public:
@@ -13,8 +12,8 @@ class Camera {
         float getPosY();
         float getPosZ();
         float getLookX();
-        float getYLook();
-        float getZLook();
+        float getLookY();
+        float getLookZ();
         void posIniCamera();
         void changeLook(float x, float y, float z);
         void specialKeysCamera(int key);

@@ -1,11 +1,10 @@
 #include "Transformation.h"
 
 Transformation :: Transformation(){
-
 }
 
 Transformation ::Transformation(string t, float a, float xx, float yy, float zz) {
-    type = y;
+    type = t;
     angle = a;
     x = xx;
     y = yy;

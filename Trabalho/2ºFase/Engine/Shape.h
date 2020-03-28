@@ -8,7 +8,6 @@
 using namespace std;
 
 class Shape {
-
     private:
         vector<Point*> points;
 

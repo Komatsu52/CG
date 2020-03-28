@@ -1,7 +1,6 @@
 #include "Group.h"
 
 Group :: Group(){
-
 }
 
 void Group :: addGroup(Group* g){
@@ -16,7 +15,7 @@ void Group :: setShapes(vector<Shape*> sh){
     shapes = sh;
 }
 
-vector<Group*> Group :: getGroup(){
+vector<Group*> Group :: getGroups(){
     return groups;
 }
 

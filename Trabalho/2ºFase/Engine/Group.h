@@ -9,7 +9,6 @@
 using namespace std;
 
 class Group {
-
     private:
         vector<Group*> groups;
         vector<Transformation*> trans;
@@ -20,7 +19,7 @@ class Group {
         void addGroup(Group* g);
         void addTransformation(Transformation* t);
         void setShapes(vector<Shape*> sh);
-        vector<Group*> getGroup();
+        vector<Group*> getGroups();
         vector<Transformation*> getTrans();
         vector<Shape*> getShapes();
 };

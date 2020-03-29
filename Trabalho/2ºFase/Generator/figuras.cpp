@@ -56,7 +56,7 @@ vector<Point> generatePlane(float x, float z){
     return points;
 }
 
-void generateBoxSides(float x, float y, float z, int divis, vector<Point> points){
+void generateBoxSides(float x, float y, float z, int divis, vector<Point>* points){
     float stepz = z / (float)(divis); // Step X axis.
     float stepy = y / (float)(divis); // Step Y axis.
     float x2 = x/2;
@@ -79,13 +79,13 @@ void generateBoxSides(float x, float y, float z, int divis, vector<Point> points
 
             p4.z = x2; p4.y = i; p4.z = (j + stepz);
 
-            points.push_back(p4);
-            points.push_back(p3);
-            points.push_back(p2);
+            points -> push_back(p4);
+            points -> push_back(p3);
+            points -> push_back(p2);
 
-            points.push_back(p2);
-            points.push_back(p1);
-            points.push_back(p4);
+            points -> push_back(p2);
+            points -> push_back(p1);
+            points -> push_back(p4);
 
             p1.x = -x2;
 
@@ -95,18 +95,18 @@ void generateBoxSides(float x, float y, float z, int divis, vector<Point> points
 
             p4.z = -x2;
 
-            points.push_back(p1);
-            points.push_back(p2);
-            points.push_back(p3);
+            points -> push_back(p1);
+            points -> push_back(p2);
+            points -> push_back(p3);
 
-            points.push_back(p3);
-            points.push_back(p4);
-            points.push_back(p1);
+            points -> push_back(p3);
+            points -> push_back(p4);
+            points -> push_back(p1);
         }
     }
 }
 
-void generateBoxTops(float x, float y, float z, int divis, vector<Point> points){
+void generateBoxTops(float x, float y, float z, int divis, vector<Point>* points){
     float stepx = x / (float)(divis); // Step X axis.
     float stepz = z / (float)(divis); // Step Y axis.
     float y2 = y/2;
@@ -129,13 +129,13 @@ void generateBoxTops(float x, float y, float z, int divis, vector<Point> points)
 
             p4.z = (j + stepx); p4.y = y2; p4.z = i;
 
-            points.push_back(p4);
-            points.push_back(p3);
-            points.push_back(p2);
+            points -> push_back(p4);
+            points -> push_back(p3);
+            points -> push_back(p2);
 
-            points.push_back(p2);
-            points.push_back(p1);
-            points.push_back(p4);
+            points -> push_back(p2);
+            points -> push_back(p1);
+            points -> push_back(p4);
 
             p1.y = -y2;
 
@@ -145,18 +145,18 @@ void generateBoxTops(float x, float y, float z, int divis, vector<Point> points)
 
             p4.y = -y2;
 
-            points.push_back(p1);
-            points.push_back(p2);
-            points.push_back(p3);
+            points -> push_back(p1);
+            points -> push_back(p2);
+            points -> push_back(p3);
 
-            points.push_back(p3);
-            points.push_back(p4);
-            points.push_back(p1);
+            points -> push_back(p3);
+            points -> push_back(p4);
+            points -> push_back(p1);
         }
     }
 }
 
-void generateBoxFront(float x, float y, float z, int divis, vector<Point> points){
+void generateBoxFront(float x, float y, float z, int divis, vector<Point>* points){
     float stepx = x / (float)(divis); // Step X axis.
     float stepy = y / (float)(divis); // Step Y axis.
     float z2 = z/2;
@@ -179,13 +179,13 @@ void generateBoxFront(float x, float y, float z, int divis, vector<Point> points
 
             p4.z = (j + stepx); p4.y = i; p4.z = z2;
 
-            points.push_back(p1);
-            points.push_back(p2);
-            points.push_back(p3);
+            points -> push_back(p1);
+            points -> push_back(p2);
+            points -> push_back(p3);
 
-            points.push_back(p3);
-            points.push_back(p4);
-            points.push_back(p1);
+            points -> push_back(p3);
+            points -> push_back(p4);
+            points -> push_back(p1);
 
             p1.z = -z2;
 
@@ -195,13 +195,13 @@ void generateBoxFront(float x, float y, float z, int divis, vector<Point> points
 
             p4.z = -z2;
 
-            points.push_back(p4);
-            points.push_back(p3);
-            points.push_back(p2);
+            points -> push_back(p4);
+            points -> push_back(p3);
+            points -> push_back(p2);
 
-            points.push_back(p2);
-            points.push_back(p1);
-            points.push_back(p4);
+            points -> push_back(p2);
+            points -> push_back(p1);
+            points -> push_back(p4);
         }
     }
 }
@@ -209,9 +209,9 @@ void generateBoxFront(float x, float y, float z, int divis, vector<Point> points
 vector<Point> generateBox(float x, float y, float z, int divis){
     vector<Point> points;
 
-    generateBoxSides(x,y,z,divis, points);
-    generateBoxTops(x,y,z,divis, points);
-    generateBoxFront(x,y,z,divis, points);
+    generateBoxSides(x,y,z,divis, &points);
+    generateBoxTops(x,y,z,divis, &points);
+    generateBoxFront(x,y,z,divis, &points);
 
     return points;
 }

@@ -77,7 +77,7 @@ void generateBoxSides(float x, float y, float z, int divis, vector<Point>* point
 
             p3.x = x2; p3.y = (i - stepy); p3.z = (j + stepz);
 
-            p4.z = x2; p4.y = i; p4.z = (j + stepz);
+            p4.x = x2; p4.y = i; p4.z = (j + stepz);
 
             points -> push_back(p4);
             points -> push_back(p3);
@@ -93,7 +93,7 @@ void generateBoxSides(float x, float y, float z, int divis, vector<Point>* point
 
             p3.x = -x2;
 
-            p4.z = -x2;
+            p4.x = -x2;
 
             points -> push_back(p1);
             points -> push_back(p2);
@@ -127,7 +127,7 @@ void generateBoxTops(float x, float y, float z, int divis, vector<Point>* points
 
             p3.x = (j + stepx); p3.y = y2; p3.z = (i - stepz);
 
-            p4.z = (j + stepx); p4.y = y2; p4.z = i;
+            p4.x = (j + stepx); p4.y = y2; p4.z = i;
 
             points -> push_back(p4);
             points -> push_back(p3);
@@ -177,7 +177,7 @@ void generateBoxFront(float x, float y, float z, int divis, vector<Point>* point
 
             p3.x = (j + stepx); p3.y = (i - stepy); p3.z = z2;
 
-            p4.z = (j + stepx); p4.y = i; p4.z = z2;
+            p4.x = (j + stepx); p4.y = i; p4.z = z2;
 
             points -> push_back(p1);
             points -> push_back(p2);

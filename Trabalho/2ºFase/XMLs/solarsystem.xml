@@ -12,7 +12,7 @@
             <group>
                   <!-- Mercurio -->
                   <translate X="-10" Z="20" />
-                  <scale X="0.2" Y="0.2" Z="0.2" />  
+                  <scale X="0.24" Y="0.24" Z="0.24" />  
 		  <colour R="0.2" G="0.2" B="0.2" />
                   <models>
                         <model file="sphere.3d" />
@@ -21,7 +21,7 @@
             <group>
                   <!-- Venus -->
                   <translate X="30" />
-                  <scale X="0.5" Y="0.5" Z="0.5" />  
+                  <scale X="0.6" Y="0.6" Z="0.6" />  
 		  <colour R="0.8" G="0.5" B="0.5" />
                   <models>
                         <model file="sphere.3d" />
@@ -30,7 +30,7 @@
             <group>
                   <!-- Terra -->
                   <translate X="-40" Z="10" />
-                  <scale X="0.5" Y="0.5" Z="0.5" />
+                  <scale X="0.63" Y="0.63" Z="0.63" />
 		  <colour R="0.39" G="0.58" B="0.93" />  
                   <models>
                         <model file="sphere.3d" />
@@ -48,7 +48,7 @@
             <group>
                   <!-- Marte -->
                   <translate X="55" Z="10" />
-                  <scale X="0.25" Y="0.25" Z="0.25" /> 
+                  <scale X="0.34" Y="0.35" Z="0.35" /> 
                   <colour R="0.82" G="0.41" B="0.12" />  
                   <models>
                         <model file="sphere.3d" />
@@ -57,7 +57,7 @@
             <group>
                   <!-- Jupiter -->
                   <translate X="100" Z="10" />
-                  <scale X="1.4" Y="1.4" Z="1.4" /> 
+                  <scale X="1.5" Y="1.5" Z="1.5" /> 
 		  <colour R="0.82" G="0.71" B="0.55" /> 
                   <models>
                         <model file="sphere.3d" />
@@ -102,7 +102,7 @@
             <group>
                   <!-- Saturno -->
                   <translate X="120" Z="-20" />
-                  <scale X="1.1" Y="1.1" Z="1.1" />  
+                  <scale X="1.2" Y="1.2" Z="1.2" />  
                  <colour R="0.8" G="0.6" B="0.6" /> 
                   <models>
                         <model file="sphere.3d" />
@@ -137,7 +137,7 @@
                   <group>
                         <!-- Anel -->
                         <rotate angle="55" X="1" Y="1" />
-                        <scale X="2" Z="0" Y="2" />
+                        <scale X="3" Z="0" Y="0.5" />
 			<colour R="0.69" G="0.88" B="0.9" /> 
                         <models>
                               <model file="torus.3d" />
@@ -147,7 +147,7 @@
             <group>
                   <!-- Neptuno -->
                   <translate X="165" Z="15" />
-                  <scale X="0.6" Y="0.6" Z="0.6" /> 
+                  <scale X="0.8" Y="0.8" Z="0.8" /> 
 		  <colour R="0.2" G="0.2" B="1.0" />  
                   <models>
                         <model file="sphere.3d" />

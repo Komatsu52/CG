@@ -99,7 +99,7 @@ void parseRotate(Group *group, XMLElement *element){
     string type = "rotation";
 
     if(element -> Attribute("angle"))
-        x = stof(element -> Attribute("angle"));
+        angle = stof(element -> Attribute("angle"));
 
     if(element -> Attribute("X"))
         x = stof(element -> Attribute("X"));

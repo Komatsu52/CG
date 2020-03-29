@@ -1,5 +1,7 @@
 <scene>
-  <models>
-     <model file="../../Files3d/cylinder.3d"/>
-  </models>
+    <group>
+        <models>
+            <model file="cylinder.3d" />
+        </models>
+    </group>    
 </scene>

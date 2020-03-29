@@ -1,5 +1,7 @@
 <scene>
-  <models>
-     <model file="../../Files3d/sphere.3d"/>
-  </models>
+    <group>
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>    
 </scene>

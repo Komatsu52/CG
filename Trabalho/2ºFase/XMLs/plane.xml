@@ -1,5 +1,7 @@
 <scene>
-  <models>
-     <model file="../../Files3d/plane.3d"/>
-  </models>
+    <group>
+        <models>
+            <model file="plane.3d" />
+        </models>
+    </group>    
 </scene>

@@ -11,6 +11,7 @@ int readPointsFile(string filename, vector<Point*> *points){
         cout << "Impossível abrir ficheiro: " << filename << "." << endl;
         return -1;
     }
+
     else{
         while(!file.eof()){
             getline(file, l);
@@ -32,7 +33,7 @@ int readPointsFile(string filename, vector<Point*> *points){
     return 0;
 }
 
-Group* loadXMLFile(string filename, vector<Point*> *points){
+Group* loadXMLFile(string filename){
     Group* group = nullptr;
     XMLDocument xmlDoc;
     XMLNode *pNode;
@@ -46,7 +47,7 @@ Group* loadXMLFile(string filename, vector<Point*> *points){
         if(pNode != nullptr){
             group = new Group();
             pElement = pNode -> FirstChildElement("group");
-            parseGroup(group, pElement, points, 0);
+            parseGroup(group, pElement);
         }
     }
 
@@ -57,24 +58,48 @@ Group* loadXMLFile(string filename, vector<Point*> *points){
     return group;
 }
 
-void parseTranslate(Group *group, XMLElement *element, vector<Point*> *orbits, int d){
+void parseTranslate(Group *group, XMLElement *element){
     float x = 0, y = 0, z = 0;
-    string type = "translation";
 
-    if(element -> Attribute("X"))
-        x = stof(element -> Attribute("X"));
+    if(element -> Attribute("time")){
+        bool d = false;
+        vector<Point*> points;
 
-    if(element -> Attribute("Y"))
-        y = stof(element -> Attribute("Y"));
+        if(element -> Attribute("derivative"))
+            d = stoi(element -> Attribute("derivative")) == 1;
 
-    if(element -> Attribute("Z"))
-        z = stof(element -> Attribute("Z"));
+        float time = stof(element -> Attribute("time"));
+        time = 1 / (time * 1000);
+        element = element -> FirstChildElement("point");
 
-    group -> addTransformation(new Transformation(type, 0, x, y, z));
+        while (element != nullptr){
+            if(element->Attribute("X"))
+                x = stof(element->Attribute("X"));
 
-    if(d == 0 || d == 1){
-        Point *p = new Point(x, y, z);
-        orbits -> push_back(p);
+            if(element->Attribute("Y"))
+                y = stof(element->Attribute("Y"));
+
+            if(element->Attribute("Z"))
+                z = stof(element->Attribute("Z"));
+
+            points.push_back(new Point (x, y, z));
+            element = element -> NextSiblingElement("point");
+        }
+
+        group -> addTransformation(new Transformation(time, points, d, "translateTime"));
+    }
+
+    else {
+        if (element -> Attribute("X"))
+            x = stof(element->Attribute("X"));
+
+        if (element -> Attribute("Y"))
+            y = stof(element->Attribute("Y"));
+
+        if (element -> Attribute("Z"))
+            z = stof(element->Attribute("Z"));
+
+        group -> addTransformation(new Transformation("translate", 0, x, y, z));
     }
 }
 
@@ -96,9 +121,15 @@ void parseScale(Group *group, XMLElement *element){
 
 void parseRotate(Group *group, XMLElement *element){
     float angle = 0, x = 0, y = 0, z = 0;
-    string type = "rotation";
+    string type = "rotate";
 
-    if(element -> Attribute("angle"))
+    if(element -> Attribute("time")){
+        float time = stof(element -> Attribute("time"));
+        angle = 360 / (time * 1000);
+        type = "rotateTime";
+    }
+
+    else if(element -> Attribute("angle"))
         angle = stof(element -> Attribute("angle"));
 
     if(element -> Attribute("X"))
@@ -161,12 +192,12 @@ void parseColour(Group *group, XMLElement *element) {
     group->addTransformation(new Transformation(type, 0, x, y, z));
 }
 
-void parseGroup(Group *group, XMLElement *gElement, vector<Point*> *orbits, int d){
+void parseGroup(Group *group, XMLElement *gElement){
     XMLElement *element = gElement -> FirstChildElement();
 
     while (element){
         if (strcmp(element -> Name(),"translate") == 0)
-            parseTranslate(group,element,orbits,d);
+            parseTranslate(group,element);
 
         else if (strcmp(element -> Name(),"scale") == 0)
             parseScale(group,element);
@@ -183,7 +214,7 @@ void parseGroup(Group *group, XMLElement *gElement, vector<Point*> *orbits, int 
         else if (strcmp(element -> Name(),"group") == 0){
             Group *child = new Group();
             group -> addGroup(child);
-            parseGroup(child,element,orbits,d+1);
+            parseGroup(child,element);
         }
 
         element = element -> NextSiblingElement();

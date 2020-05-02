@@ -96,7 +96,6 @@ Point* Patch :: getPoint(float ta, float tb, float (*coordX)[4], float (*coordY)
     multMatrixVector(*coordY,am,amCoordenadaY);
     multMatrixVector(*coordZ,am,amCoordenadaZ);
 
-    //
     for (int i = 0; i < 4; i++)
     {
         x += amCoordenadaX[i] * bm[i];

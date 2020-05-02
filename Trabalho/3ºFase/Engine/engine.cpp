@@ -4,64 +4,98 @@
 #include "tinyxml2.h"
 #include "Point.h"
 #include "parser.h"
+#include "Transformation.h"
 
 using namespace std;
 using namespace tinyxml2;
 
-void drawScene(Group *scene){
-    const char* type;
 
-    glPushMatrix();
-    glColor3f(0.5f, 0.5f, 1.0f);
+void drawOrbits(Transformation *t){
+    vector<Point*> points = t -> getPointsCurve();
 
-    for(Transformation *t : scene -> getTrans()){
-        type = t -> getType().c_str();
+    glColor3f(1.0f, 1.0f, 0.94f);
+    glBegin(GL_POINTS);
 
-        if(!strcmp(type, "translation"))
-            glTranslatef(t -> getX(), t -> getY(), t -> getZ());
-
-        else if(!strcmp(type, "rotation"))
-            glRotatef(t -> getAngle(), t -> getX(), t -> getY(), t -> getZ());
-
-        else if(!strcmp(type, "scale"))
-            glScalef(t -> getX(), t -> getY(), t -> getZ());
-
-        else if(!strcmp(type, "colour"))
-            glColor3f(t -> getX(), t -> getY(), t -> getZ());
-    }
-
-    glBegin(GL_TRIANGLES);
-
-    for(Shape *shape : scene -> getShapes()){
-        for(Point *p : shape -> getPoints())
-            glVertex3f(p -> getX(), p -> getY(), p -> getZ());
+    for(Point *p : points){
+        float x = p -> getX();
+        float y = p -> getY();
+        float z = p -> getZ();
+        glVertex3f(x, y, z);
     }
 
     glEnd();
+}
+
+void transApplication(Transformation *t){
+    float cTimeAux = glutGet(GLUT_ELAPSED_TIME);
+    if(stop != 1)
+        eTime += cTimeAux - cTime;
+    cTime = cTimeAux;
+
+    const char* type = t -> getType().c_str();
+    float x = t -> getX();
+    float y = t -> getY();
+    float z = t -> getZ();
+    float angle = t -> getAngle();
+    float time = t -> getTime();
+
+    if (strcmp(type,"translate") == 0)
+        glTranslatef(x, y, z);
+
+    else if (strcmp(type,"scale") == 0)
+        glScalef(x, y, z);
+
+    else if (strcmp(type,"rotate") == 0)
+        glRotatef(angle, x, y, z);
+
+    else if (strcmp(type,"colour") == 0)
+        glColor3f(x, y, z);
+
+    else if (strcmp(type,"rotateTime") == 0) {
+        float aux = eTime * angle;
+        glRotatef(aux, x, y, z);
+    }
+
+    else if (strcmp(type,"translateTime") == 0) {
+        float p[4], d[4];
+        float dTime = eTime *time;
+
+        t -> getGlobalCatmullRomPoint(dTime, p, d);
+        drawOrbits(t);
+        glTranslatef(p[0], p[1], p[2]);
+
+        if(t -> getDeriv()){
+            float res[4];
+            t -> normalize(d);
+            t -> cross(d, t -> getVetor(), res);
+            t -> normalize(res);
+            t -> cross(res, d, t -> getVetor());
+            float matrix[16];
+            t -> normalize(t -> getVetor());
+            t -> rotMatrix(matrix, d, t -> getVetor(), res);
+
+            glMultMatrixf(matrix);
+        }
+    }
+}
+
+void drawScene(Group *scene){
+
+    glPushMatrix();
+
+    for(Transformation *t : scene -> getTrans()){
+        transApplication(t);
+    }
+
+    vector<Shape*> shapes = scene -> getShapes();
+    for(vector<Shape*> :: iterator s_it = shapes.begin(); s_it != shapes.end(); ++s_it){
+        (*s_it) -> draw();
+    }
 
     for(Group *g : scene -> getGroups())
         drawScene(g);
 
     glPopMatrix();
-}
-
-void drawOrbits(){
-    glColor3f(1.0f, 1.0f, 0.94f);
-
-    for(auto const& p : orbits){
-        glBegin(GL_POINTS);
-
-        for(int j = 0; j < 200; j++){
-            float x = p -> getX() * p -> getX();
-            float y = p -> getY() * p -> getY();
-            float z = p -> getZ() * p -> getZ();
-            float radius = sqrtf(x + y + z);
-            float alpha = (float)j * 2 * (float)(M_PI / 200);
-            glVertex3f(radius * cos(alpha), 0, radius * sin(alpha));
-        }
-
-        glEnd();
-    }
 }
 
 void MenuAjuda(){
@@ -104,29 +138,29 @@ void processMenu(int option){
             camera -> posIniCamera();
             break;
 
-        default:{
-            Point *p = orbits.at(option - 2);
-            camera -> changeLook(p -> getX(), p -> getY(), p -> getZ());
+        case 2:
+            stop = 0;
             break;
-        }
+
+        case 3:
+            stop = 1;
+            break;
+
+        default:
+            break;
     }
 
     glutPostRedisplay();
 }
 
 void showMenu(){
-    int planet = glutCreateMenu(processMenu);
 
     glutAddMenuEntry("Sol",1);
-
-    for (int op = 0; op < (int)orbits.size(); op++){
-        char str[10];
-        sprintf(str, "Planeta %d", op+1);
-        glutAddMenuEntry(str, op+2);
-    }
-
+    int planets = glutCreateMenu(processMenu);
+    glutAddMenuEntry("Ligar",2);
+    glutAddMenuEntry("Desligar",3);
     glutCreateMenu(processMenu);
-    glutAddSubMenu("Planeta ", planet);
+    glutAddSubMenu("Planetas", planets);
     glutAddMenuEntry("Sair", 0);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -164,6 +198,22 @@ void motionMouse(int x, int y){
     camera -> motionMouse(x, y);
 }
 
+void fps(){
+    int time;
+    char name[30];
+
+    frame++;
+    time = glutGet(GLUT_ELAPSED_TIME);
+
+    if(time - timebase > 1000){
+        float f = frame * 1000/(time - timebase);
+        timebase = time;
+        frame = 0;
+        sprintf(name, "Sistema Solar %.2f FPS", f);
+        glutSetWindowTitle(name);
+    }
+}
+
 void renderScene(){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -171,8 +221,8 @@ void renderScene(){
     glLoadIdentity();
     gluLookAt(camera -> getPosX(), camera -> getPosY(), camera -> getPosZ(), camera -> getLookX(), camera -> getLookY(), camera -> getLookZ(), 0.0f, 1.0f, 0.0f);
     glPolygonMode(GL_FRONT_AND_BACK, line);
+    fps();
     drawScene(scene);
-    drawOrbits();
 
     glutSwapBuffers();
 }
@@ -202,6 +252,13 @@ int main(int argc, char **argv){
     glutInitWindowSize(800, 800);
     glutCreateWindow("Sistema_Solar");
 
+    #ifndef __APPLE__
+        if (glewInit() != GLEW_OK){
+            cout << "Problema com o GLEW." << endl;
+            return -1;
+        }
+    #endif
+
     if(argc < 2){
         cout << "Input inválido, use -h caso queira ajuda." << endl;
         return 0;
@@ -211,7 +268,7 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    scene = loadXMLFile(argv[1], &orbits);
+    scene = loadXMLFile(argv[1]);
     camera = new Camera();
     if(scene == nullptr)
         return 0;
@@ -228,6 +285,7 @@ int main(int argc, char **argv){
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glEnableClientState(GL_VERTEX_ARRAY);
 
     glutMainLoop();
 

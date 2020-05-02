@@ -1,10 +1,5 @@
 #ifndef ENGINE_ENGINE_H
 #define ENGINE_ENGINE_H
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
 
 #include <math.h>
 #include <iostream>
@@ -21,7 +16,9 @@ using namespace std;
 int line = GL_LINE;
 Group *scene;
 Camera *camera;
-vector<Point*> orbits;
+float eTime = 0.0f, cTime = 0.0f;
+int frame = 0, timebase = 0;
+int stop;
 
 void specialKeys(int key, int a, int b);
 void renderScene();

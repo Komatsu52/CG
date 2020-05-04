@@ -160,7 +160,7 @@ void showMenu(){
     glutAddMenuEntry("Ligar",2);
     glutAddMenuEntry("Desligar",3);
     glutCreateMenu(processMenu);
-    glutAddSubMenu("Planetas", planets);
+    glutAddSubMenu("Movimento", planets);
     glutAddMenuEntry("Sair", 0);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }

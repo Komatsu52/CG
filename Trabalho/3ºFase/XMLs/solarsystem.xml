@@ -342,8 +342,8 @@
                   </models>
             </group>
 	    <group>
-                  <!-- Comet -->
-                  <rotate angle="45" X="1" />
+                  <!-- Cometa -->
+                  <rotate angle="35" X="1" />
                   <translate time="500" derivative="1" >
                         <point X="250.000000" Y="0.000000" Z="0.000000" />
                         <point X="0.000000" Y="0.000000" Z="250.000000" />

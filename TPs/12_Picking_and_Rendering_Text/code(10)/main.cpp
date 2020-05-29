@@ -117,7 +117,7 @@ void renderText() {
 
     void* font = GLUT_BITMAP_HELVETICA_18; //  Fonte da letra
     char text[64];
-    float textw;
+    //float textw;
 
 // O nosso texto será a cor branca , vamos desactivar temporariamente a luz para não interferir na cor do texto
     glColor3f(1,1,1);

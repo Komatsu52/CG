@@ -28,9 +28,6 @@ class Shape {
         Shape();
         Shape(vector<Point*> vert, vector<Point*> normal, vector<float> text);
         Shape(string textFile, vector<Point*> vert, vector<Point*> normal, vector<float> text);
-        GLuint* getBuffer();
-        GLuint getTexture();
-        void setTexture(GLuint text);
         void setParseMat(Material* c);
         void prepareBuffer(vector<Point*> vert, vector<Point*> normal, vector<float> text);
         void loadTexture(string textFile);

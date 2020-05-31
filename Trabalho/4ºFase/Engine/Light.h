@@ -18,7 +18,6 @@
 #define DIFFUSE 3
 #define AMBIENT 4
 #define SPECULAR 5
-#define EMISSION 6
 
 using namespace std;
 

@@ -35,22 +35,6 @@ Material :: Material(Transformation* d, Transformation* a, Transformation* s, Tr
     emission[3] = 1;
 }
 
-float* Material :: getDiffuse(){
-    return diffuse;
-}
-
-float* Material :: getAmbient(){
-    return ambient;
-}
-
-float* Material :: getSpecular(){
-    return specular;
-}
-
-float* Material :: getEmission(){
-    return emission;
-}
-
 void Material :: draw() {
 
     if(diffuse[3] != -1)

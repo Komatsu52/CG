@@ -17,10 +17,6 @@ class Material {
         Material();
         Material(Transformation* d, Transformation* a, Transformation* s, Transformation* e);
         void draw();
-        float* getDiffuse();
-        float* getAmbient();
-        float* getSpecular();
-        float* getEmission();
 };
 
 #endif

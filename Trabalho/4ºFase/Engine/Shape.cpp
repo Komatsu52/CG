@@ -21,18 +21,6 @@ Shape :: Shape(string textFile, vector<Point*> vert, vector<Point*> normal, vect
     loadTexture(textFile);
 }
 
-GLuint* Shape :: getBuffer(){
-    return buffer;
-}
-
-GLuint Shape:: getTexture(){
-    return texture;
-}
-
-void Shape :: setTexture(GLuint t){
-    texture = t;
-}
-
 void Shape :: setParseMat(Material* c){
     materials = c;
 }

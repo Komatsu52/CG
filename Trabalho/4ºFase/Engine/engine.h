@@ -6,15 +6,17 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <IL/il.h>
 
 #include "Point.h"
 #include "Group.h"
 #include "Camera.h"
+#include "Scene.h"
 
 using namespace std;
 
-int line = GL_LINE;
-Group *scene;
+int line = GL_FILL;
+Scene *scene;
 Camera *camera;
 float eTime = 0.0f, cTime = 0.0f;
 int frame = 0, timebase = 0;

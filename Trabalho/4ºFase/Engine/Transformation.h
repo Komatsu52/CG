@@ -22,6 +22,7 @@ class Transformation {
         Transformation();
         Transformation(string t, float a, float xx, float yy, float zz);
         Transformation(float ti, vector<Point*> p, bool d, string t);
+        Transformation(float r, float g, float b);
         string getType();
         float getAngle();
         float getX();
@@ -31,6 +32,9 @@ class Transformation {
         bool getDeriv();
         float* getVetor();
         vector<Point*> getPointsCurve();
+        void setX(float x);
+        void setY(float y);
+        void setZ(float z);
         void normalize(float *a);
         void cross(float *a, float *b, float *res);
         void rotMatrix(float *r, float *xx, float *yy, float *zz);

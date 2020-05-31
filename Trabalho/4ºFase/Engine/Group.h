@@ -5,6 +5,7 @@
 
 #include "Transformation.h"
 #include "Shape.h"
+#include "Light.h"
 
 using namespace std;
 

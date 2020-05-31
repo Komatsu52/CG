@@ -1,6 +1,7 @@
 #include "Transformation.h"
 
 Transformation :: Transformation(){
+
 }
 
 Transformation :: Transformation(string t, float a, float xx, float yy, float zz) {
@@ -11,12 +12,18 @@ Transformation :: Transformation(string t, float a, float xx, float yy, float zz
     z = zz;
 }
 
-Transformation ::Transformation(float ti, vector<Point *> p, bool d, string t) {
+Transformation :: Transformation(float ti, vector<Point *> p, bool d, string t) {
     time = ti;
     controlPoints = p;
     setCatmullPoints();
     deriv = d;
     type = t;
+}
+
+Transformation :: Transformation(float r, float g, float b) {
+    x = r;
+    y = g;
+    z = b;
 }
 
 string Transformation :: getType() {
@@ -39,20 +46,32 @@ float Transformation :: getZ() {
     return z;
 }
 
-float Transformation::getTime(){
+float Transformation :: getTime(){
     return time;
 }
 
-bool Transformation::getDeriv() {
+bool Transformation :: getDeriv() {
     return deriv;
 }
 
-float* Transformation::getVetor(){
+float* Transformation :: getVetor(){
     return vetor;
 }
 
-vector<Point*> Transformation::getPointsCurve(){
+vector<Point*> Transformation :: getPointsCurve(){
     return pointsCurve;
+}
+
+void Transformation :: setX(float x){
+    this -> x = x;
+}
+
+void Transformation :: setY(float y){
+    this -> y = y;
+}
+
+void Transformation :: setZ(float z){
+    this -> z = z;
 }
 
 void Transformation::normalize(float *a) {
@@ -92,6 +111,7 @@ void Transformation :: getCatmullRomPoint(float t, int *indexes, float *p, float
     };
 
     float px[4],py[4],pz[4];
+
     for(int i = 0; i < 4 ; i++){
         px[i] = controlPoints[indexes[i]]->getX();
         py[i] = controlPoints[indexes[i]]->getY();

@@ -3,7 +3,7 @@
 
 class Camera {
     private:
-        float radius, speed, alpha, teta, posX, posY, posZ, lookX, lookY, lookZ, mousePosX, mousePosY;
+        float alpha, teta, posX, posY, posZ, lookX, lookY, lookZ, mousePosX, mousePosY;
         bool mousePressed;
 
     public:
@@ -11,11 +11,10 @@ class Camera {
         float getPosX();
         float getPosY();
         float getPosZ();
-        float getLookX();
-        float getLookY();
-        float getLookZ();
+        float getOrX();
+        float getOrY();
+        float getOrZ();
         void posIniCamera();
-        void changeLook(float x, float y, float z);
         void specialKeysCamera(int key);
         void pressMouse(int button, int state, int x, int y);
         void motionMouse(int x, int y);

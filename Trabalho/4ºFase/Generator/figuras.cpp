@@ -99,8 +99,10 @@ vector<Point> generatePlane(float x, float z, vector<Point> *normal, vector<floa
 void generateBoxSides(float x, float y, float z, int divis, vector<Point>* points, vector<Point> *normal, vector<float> *texture){
     float stepz = z / (float)(divis); // Step X axis.
     float stepy = y / (float)(divis); // Step Y axis.
+    float texZ_inv = 0.750000,texZ = 0.000000 , texY = 0.666667;
+    float divTexZ = 0.250000 / (float)(divis) , divTexY = 0.333333 / (float)(divis); 
     float x2 = x/2;
-    Point p1, p2, p3, p4;
+    Point p1, p2, p3, p4, p5, p6;
 
     for (float i = y/2; i > -y/2; i -= stepy) {
         for (float j = -z/2; j < z/2; j += stepz) {
@@ -119,6 +121,10 @@ void generateBoxSides(float x, float y, float z, int divis, vector<Point>* point
 
             p4.x = x2; p4.y = i; p4.z = (j + stepz);
 
+            //valores das normais
+            p5.x = 1.000000;  p5.y = 0.000000; p5.z = 0.000000;
+            p6.x = -1.000000;  p6.y = 0.000000; p6.z = 0.000000;
+
             points -> push_back(p4);
             points -> push_back(p3);
             points -> push_back(p2);
@@ -126,6 +132,20 @@ void generateBoxSides(float x, float y, float z, int divis, vector<Point>* point
             points -> push_back(p2);
             points -> push_back(p1);
             points -> push_back(p4);
+
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+
+            (*texture).push_back(texZ_inv-divTexZ); (*texture).push_back(texY);           // p4 tex
+            (*texture).push_back(texZ_inv-divTexZ); (*texture).push_back(texY-divTexY);   // p3 tex
+            (*texture).push_back(texZ_inv); (*texture).push_back(texY-divTexY);           // p2 tex
+            (*texture).push_back(texZ_inv); (*texture).push_back(texY-divTexY);           // p2 tex 
+            (*texture).push_back(texZ_inv); (*texture).push_back(texY);                   // p1 tex
+            (*texture).push_back(texZ_inv-divTexZ); (*texture).push_back(texY);           // p4 tex
 
             p1.x = -x2;
 
@@ -142,15 +162,41 @@ void generateBoxSides(float x, float y, float z, int divis, vector<Point>* point
             points -> push_back(p3);
             points -> push_back(p4);
             points -> push_back(p1);
+
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+
+            (*texture).push_back(texZ); (*texture).push_back(texY);                    // p1 tex
+            (*texture).push_back(texZ); (*texture).push_back(texY-divTexY);            // p2 tex
+            (*texture).push_back(texZ+divTexZ); (*texture).push_back(texY-divTexY);    // p3 tex
+            (*texture).push_back(texZ+divTexZ); (*texture).push_back(texY-divTexY);    // p3 tex
+            (*texture).push_back(texZ+divTexZ); (*texture).push_back(texY);            // p4 tex
+            (*texture).push_back(texZ); (*texture).push_back(texY);                    // p1 tex
+
+            //Variacao da divisão horizontal de textura 
+            texZ_inv-= divTexZ;
+            texZ+=divTexZ;
         }
+        //decremento da divisão vertical de textura 
+        texY-= divTexY;
+        //reset para a posição de textura horizontal inicial 
+        texZ = 0.000000;
+        texZ_inv = 0.750000;
     }
 }
+
 
 void generateBoxTops(float x, float y, float z, int divis, vector<Point>* points, vector<Point> *normal, vector<float> *texture){
     float stepx = x / (float)(divis); // Step X axis.
     float stepz = z / (float)(divis); // Step Y axis.
+    float texX_inv = 0.500000, texX = 0.500000 , texZTop = 1.000000, texZBot = 0.333333;
+    float divTexX = 0.250000 / (float)(divis); float divTexZ = 0.333333 / (float)(divis); 
     float y2 = y/2;
-    Point p1, p2, p3, p4;
+    Point p1, p2, p3, p4, p5, p6;
 
     for (float i = z/2; i > -z/2; i -= stepz) {
         for (float j = -x / 2; j < x / 2; j += stepx) {
@@ -169,6 +215,10 @@ void generateBoxTops(float x, float y, float z, int divis, vector<Point>* points
 
             p4.x = (j + stepx); p4.y = y2; p4.z = i;
 
+            //valores das normais
+            p5.x = 0.000000;  p5.y = 1.000000; p5.z = 0.000000;
+            p6.x = 0.000000;  p6.y = -1.000000; p6.z = 0.000000;
+
             points -> push_back(p4);
             points -> push_back(p3);
             points -> push_back(p2);
@@ -176,6 +226,20 @@ void generateBoxTops(float x, float y, float z, int divis, vector<Point>* points
             points -> push_back(p2);
             points -> push_back(p1);
             points -> push_back(p4);
+
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+
+            (*texture).push_back(texX_inv-divTexX); (*texture).push_back(texZTop);           // p4 tex
+            (*texture).push_back(texX_inv-divTexX); (*texture).push_back(texZTop-divTexZ);   // p3 tex
+            (*texture).push_back(texX_inv); (*texture).push_back(texZTop-divTexZ);           // p2 tex
+            (*texture).push_back(texX_inv); (*texture).push_back(texZTop-divTexZ);           // p2 tex 
+            (*texture).push_back(texX_inv); (*texture).push_back(texZTop);                   // p1 tex
+            (*texture).push_back(texX_inv-divTexX); (*texture).push_back(texZTop);           // p4 tex
 
             p1.y = -y2;
 
@@ -192,15 +256,42 @@ void generateBoxTops(float x, float y, float z, int divis, vector<Point>* points
             points -> push_back(p3);
             points -> push_back(p4);
             points -> push_back(p1);
+
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+
+            (*texture).push_back(texX); (*texture).push_back(texZBot);                    // p1 tex
+            (*texture).push_back(texX); (*texture).push_back(texZBot-divTexZ);            // p2 tex
+            (*texture).push_back(texX-divTexX); (*texture).push_back(texZBot-divTexZ);    // p3 tex
+            (*texture).push_back(texX-divTexX); (*texture).push_back(texZBot-divTexZ);    // p3 tex
+            (*texture).push_back(texX-divTexX); (*texture).push_back(texZBot);            // p4 tex
+            (*texture).push_back(texX); (*texture).push_back(texZBot);                    // p1 tex
+
+            //Variacao da divisão horizontal de textura 
+            texX_inv-= divTexX;
+            texX-= divTexX;
         }
+        //decremento da divisão vertical de textura 
+        texZTop-= divTexZ;
+        texZBot-= divTexZ;
+        //reset para a posição de textura horizontal inicial 
+        texX_inv = 0.500000;
+        texX = 0.500000;
     }
 }
+
 
 void generateBoxFront(float x, float y, float z, int divis, vector<Point>* points, vector<Point> *normal, vector<float> *texture){
     float stepx = x / (float)(divis); // Step X axis.
     float stepy = y / (float)(divis); // Step Y axis.
+    float texX_inv = 1.000000, texX = 0.250000 , texY = 0.666667;
+    float divTexX = 0.250000 / (float)(divis) , divTexY = 0.333333 / (float)(divis); 
     float z2 = z/2;
-    Point p1, p2, p3, p4;
+    Point p1, p2, p3, p4, p5, p6;
 
     for (float i = y/2; i > -y/2; i -= stepy) {
         for (float j = -x/2; j < x/2; j += stepx) {
@@ -219,6 +310,10 @@ void generateBoxFront(float x, float y, float z, int divis, vector<Point>* point
 
             p4.x = (j + stepx); p4.y = i; p4.z = z2;
 
+            //valores das normais
+            p5.x = 0.000000;  p5.y = 0.000000; p5.z = 1.000000;
+            p6.x = 0.000000;  p6.y = 0.000000; p6.z = -1.000000;
+
             points -> push_back(p1);
             points -> push_back(p2);
             points -> push_back(p3);
@@ -226,6 +321,20 @@ void generateBoxFront(float x, float y, float z, int divis, vector<Point>* point
             points -> push_back(p3);
             points -> push_back(p4);
             points -> push_back(p1);
+
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+            (*normal).push_back(p5);
+
+            (*texture).push_back(texX); (*texture).push_back(texY);                    // p1 tex
+            (*texture).push_back(texX); (*texture).push_back(texY-divTexY);             // p2 tex
+            (*texture).push_back(texX+divTexX); (*texture).push_back(texY-divTexY);      // p3 tex
+            (*texture).push_back(texX+divTexX); (*texture).push_back(texY-divTexY);      // p3 tex
+            (*texture).push_back(texX+divTexX); (*texture).push_back(texY);             // p4 tex
+            (*texture).push_back(texX); (*texture).push_back(texY);                    // p1 tex
 
             p1.z = -z2;
 
@@ -242,7 +351,30 @@ void generateBoxFront(float x, float y, float z, int divis, vector<Point>* point
             points -> push_back(p2);
             points -> push_back(p1);
             points -> push_back(p4);
+
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+            (*normal).push_back(p6);
+
+            (*texture).push_back(texX_inv-divTexX); (*texture).push_back(texY);           // p4 tex
+            (*texture).push_back(texX_inv-divTexX); (*texture).push_back(texY-divTexY);    // p3 tex
+            (*texture).push_back(texX_inv); (*texture).push_back(texY-divTexY);           // p2 tex
+            (*texture).push_back(texX_inv); (*texture).push_back(texY-divTexY);           // p2 tex 
+            (*texture).push_back(texX_inv); (*texture).push_back(texY);                  // p1 tex
+            (*texture).push_back(texX_inv-divTexX); (*texture).push_back(texY);           // p4 tex
+
+            //Variacao da divisão horizontal de textura 
+            texX+= divTexX;
+            texX_inv-= divTexX;
         }
+        //decremento da divisão vertical de textura 
+        texY-= divTexY;
+        //reset para a posição de textura horizontal inicial 
+        texX = 0.250000;
+        texX_inv = 1.000000;
     }
 }
 

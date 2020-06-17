@@ -290,6 +290,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 
         case GLUT_KEY_RIGHT:
             alfa -= 0.1; break;
+            alfa -= 0.1; break;
 
         case GLUT_KEY_LEFT:
             alfa += 0.1; break;
@@ -326,7 +327,7 @@ void printInfo() {
     printf("Version: %s\n", glGetString(GL_VERSION));
 
     printf("\nUse Arrows to move the camera up/down and left/right\n");
-    printf("Home and End control the distance from the camera to the origin");
+    printf("PageUp and PageDown control the distance from the camera to the origin");
 
     printf ("\n vertices %d\n",verticeCount); //----------------------------------------------------------------------------add
 }

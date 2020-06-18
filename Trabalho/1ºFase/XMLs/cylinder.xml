@@ -1,5 +1,5 @@
 <scene>
   <models>
-     <model file="../../files/cylinder.3d"/>
+     <model file="../../XMLs/cylinder.3d"/>
   </models>
 </scene>
